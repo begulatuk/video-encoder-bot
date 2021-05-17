@@ -23,7 +23,11 @@
         "description": "get this value from @BotFather",
         "value": ""
       },
-      "BOT_PASSWORD": {
+      "DOWNLOAD_DIR": {
+        "description": "get this value from @BotFather",
+        "value": ""
+      },
+      "SUDO_USERS": {
         "description": "enter pasword or leave it public",
         "value": "",
         "required" : false
