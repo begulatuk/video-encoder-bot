@@ -2,6 +2,10 @@ import os
 from bot import data, download_dir
 from pyrogram.types import Message
 from .ffmpeg_utils import encode, get_thumbnail, get_duration, get_width_height
+import logging
+
+LOGGER = logging.getLogger(__name__)
+
 
 def on_task_complete():
     del data[0]
@@ -12,6 +16,7 @@ def add_task(message: Message):
     try:
       msg = message.reply_text("```Downloading video...```", quote=True)
       filepath = message.download(file_name=download_dir)
+      LOGGER.info(f"filepath: {filepath}")
       msg.edit("```Encoding video...```")
       new_file = encode(filepath)
       if new_file:
