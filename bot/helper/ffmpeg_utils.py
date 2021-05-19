@@ -41,7 +41,7 @@ def encode(filepath):
             video_opts = '-c:v copy -tag:v hvc1'
     else:
         # Transcode to h265 / hvc1
-        video_opts = '-c:v libx265 -crf 28 -tag:v hvc1 -preset medium -threads 2'
+        video_opts = '-c:v libx265 -preset ultrafast -pix_fmt yuv420p10le -threads 0'
     # Get the audio channel codec
     audio_codec = get_codec(filepath, channel='a:0')
     LOGGER.info(f"video_opts: {video_opts}")
@@ -59,6 +59,12 @@ def encode(filepath):
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
     )
+    process = await asyncio.create_subprocess_exec(
+        ['ffmpeg', '-i', filepath] + video_opts.split() + audio_opts.split() + [output_filepath],
+        # stdout must a pipe to be accessible as process.stdout
+        stdout=asyncio.subprocess.PIPE,
+        stderr=asyncio.subprocess.PIPE,
+    )    
     #LOGGER.debug(cmd)
     #process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)    
     stdout, stderr = process.communicate()    
