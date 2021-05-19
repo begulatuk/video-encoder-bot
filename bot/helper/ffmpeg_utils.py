@@ -58,6 +58,8 @@ def encode(filepath):
         'ffmpeg',
          '-i',
         filepath,
+        '-loglevel',
+        'quiet',
         '-c:v',
         'libx265',
         '-crf',
@@ -65,10 +67,10 @@ def encode(filepath):
         '-tag:v',
         'hvc1',
         '-preset',
-        'medium',
+        'slow',
         '-threads',
         '2',
-        'output_filepath'
+        output_filepath
     ]
     LOGGER.debug(cmd)
     process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)    
