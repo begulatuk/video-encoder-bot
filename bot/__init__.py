@@ -4,14 +4,21 @@ from dotenv import load_dotenv
 import logging
 from logging.handlers import RotatingFileHandler
 
+
+if os.path.exists("log.txt"):
+    with open("log.txt", "r+") as f_d:
+        f_d.truncate(0)
+        
+        
+        
 logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
     datefmt="%d-%b-%y %H:%M:%S",
     handlers=[
         RotatingFileHandler(
-            logfile,
-            maxBytes=CONFIG.MAX_LOG_SIZE,
+            log.txt,
+            maxBytes=50000000,
             backupCount=10
         ),
         logging.StreamHandler()
