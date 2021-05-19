@@ -6,6 +6,8 @@ import ffmpeg
 from subprocess import call, check_output
 from hachoir.metadata import extractMetadata
 from hachoir.parser import createParser
+import logging
+LOGGER = logging.getLogger(__name__)
 
 def get_codec(filepath, channel='v:0'):
     output = check_output(['ffprobe', '-v', 'error', '-select_streams', channel,
@@ -46,6 +48,8 @@ def encode(filepath):
     else:
         audio_opts = '-c:a aac -b:a 128k'
     call(['ffmpeg', '-i', filepath] + video_opts.split() + audio_opts.split() + [output_filepath])
+    LOGGER.info(f"filepath: {filepath}")
+    LOGGER.info(f"output_filepath: {output_filepath}")
     os.remove(filepath)
     return output_filepath
 
