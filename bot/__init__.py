@@ -1,6 +1,35 @@
 import os
 from pyrogram import Client
 from dotenv import load_dotenv
+import logging
+from logging.handlers import RotatingFileHandler
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    datefmt="%d-%b-%y %H:%M:%S",
+    handlers=[
+        RotatingFileHandler(
+            logfile,
+            maxBytes=CONFIG.MAX_LOG_SIZE,
+            backupCount=10
+        ),
+        logging.StreamHandler()
+    ]
+)
+logging.getLogger("pyrogram").setLevel(logging.WARNING)
+logging.getLogger("urllib3").setLevel(logging.WARNING)
+logging.getLogger("PIL").setLevel(logging.WARNING)
+logging.getLogger("asyncio").setLevel(logging.WARNING)
+
+
+LOGGER = logging.getLogger(__name__)
+
+
+
+
+
+
 
 if os.path.exists('config.env'):
   load_dotenv('config.env')
