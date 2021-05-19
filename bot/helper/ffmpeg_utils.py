@@ -44,16 +44,39 @@ def encode(filepath):
     # Get the audio channel codec
     audio_codec = get_codec(filepath, channel='a:0')
     LOGGER.info(f"video_opts: {video_opts}")
-    LOGGER.info(f"audio_opts: {audio_opts}")
+    
     if audio_codec == []:
         audio_opts = ''
     elif audio_codec[0] == 'aac':
         audio_opts = '-c:a copy'
     else:
         audio_opts = '-c:a aac -b:a 128k'
-    call(['ffmpeg', '-i', filepath] + video_opts.split() + audio_opts.split() + [output_filepath])
+    LOGGER.info(f"audio_opts: {audio_opts}")    
+    #call(['ffmpeg', '-i', filepath] + video_opts.split() + audio_opts.split() + [output_filepath])
+    cmd = [
+        'ffmpeg',
+         '-i',
+        filepath,
+        '-c:v',
+        'libx265',
+        '-crf',
+        '28',
+        '-tag:v',
+        'hvc1',
+        '-preset',
+        'medium',
+        '-threads',
+        '2',
+        'output_filepath'
+    ]
+    LOGGER.debug(cmd)
+    process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)    
+    stdout, stderr = process.communicate()    
+    LOGGER.debug("[stdout] " + stdout.decode())
+    LOGGER.debug("[stderr] " + stderr.decode())
     LOGGER.info(f"filepath: {filepath}")
     LOGGER.info(f"output_filepath: {output_filepath}")
+    
     os.remove(filepath)
     return output_filepath
 
