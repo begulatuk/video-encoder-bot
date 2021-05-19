@@ -69,8 +69,8 @@ def encode(filepath):
         '-preset',
         'slow',
         '-threads',
-        '2',
-        output_filepath
+        '2'
+        #output_filepath
     ]
     LOGGER.debug(cmd)
     process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)    
