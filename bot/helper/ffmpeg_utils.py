@@ -59,12 +59,12 @@ def encode(filepath):
         stdout=subprocess.PIPE,
         stderr=subprocess.PIPE,
     )
-    process = await asyncio.create_subprocess_exec(
-        ['ffmpeg', '-i', filepath] + video_opts.split() + audio_opts.split() + [output_filepath],
+    #process = await asyncio.create_subprocess_exec(
+    #    ['ffmpeg', '-i', filepath] + video_opts.split() + audio_opts.split() + [output_filepath],
         # stdout must a pipe to be accessible as process.stdout
-        stdout=asyncio.subprocess.PIPE,
-        stderr=asyncio.subprocess.PIPE,
-    )    
+   #     stdout=asyncio.subprocess.PIPE,
+   #     stderr=asyncio.subprocess.PIPE,
+    #)    
     #LOGGER.debug(cmd)
     #process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)    
     stdout, stderr = process.communicate()    
