@@ -17,7 +17,9 @@ def get_codec(filepath, channel='v:0'):
 
 def encode(filepath):
     basefilepath, extension = os.path.splitext(filepath)
+    LOGGER.info(f"basefilepath: {basefilepath}")
     output_filepath = basefilepath + '.HEVC' + '.mp4'
+    LOGGER.info(f"output_filepath: {output_filepath}")
     assert(output_filepath != filepath)
     if os.path.isfile(output_filepath):
         print('Skipping "{}": file already exists'.format(output_filepath))
@@ -41,6 +43,8 @@ def encode(filepath):
         video_opts = '-c:v libx265 -crf 28 -tag:v hvc1 -preset medium -threads 2'
     # Get the audio channel codec
     audio_codec = get_codec(filepath, channel='a:0')
+    LOGGER.info(f"video_opts: {video_opts}")
+    LOGGER.info(f"audio_opts: {audio_opts}")
     if audio_codec == []:
         audio_opts = ''
     elif audio_codec[0] == 'aac':
