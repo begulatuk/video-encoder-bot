@@ -54,26 +54,13 @@ def encode(filepath):
         audio_opts = '-c:a aac -b:a 128k'
     LOGGER.info(f"audio_opts: {audio_opts}")    
     #call(['ffmpeg', '-i', filepath] + video_opts.split() + audio_opts.split() + [output_filepath])
-    cmd = [
-        'ffmpeg',
-         '-i',
-        filepath,
-        '-loglevel',
-        'quiet',
-        '-c:v',
-        'libx265',
-        '-crf',
-        '28',
-        '-tag:v',
-        'hvc1',
-        '-preset',
-        'slow',
-        '-threads',
-        '2'
-        #output_filepath
-    ]
-    LOGGER.debug(cmd)
-    process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)    
+    process = subprocess.Popen(
+        ['ffmpeg', '-i', filepath] + video_opts.split() + audio_opts.split() + [output_filepath],
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+    )
+    #LOGGER.debug(cmd)
+    #process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)    
     stdout, stderr = process.communicate()    
     LOGGER.debug("[stdout] " + stdout.decode())
     LOGGER.debug("[stderr] " + stderr.decode())
