@@ -5,30 +5,26 @@ import logging
 from logging.handlers import RotatingFileHandler
 
 
-if os.path.exists("log.txt"):
-    with open("log.txt", "r+") as f_d:
+if os.path.exists("TorrentLeech-Gdrive.txt"):
+    with open("Torrentleech-Gdrive.txt", "r+") as f_d:
         f_d.truncate(0)
-        
-        
-        
+
+# the logging things
 logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+    level=logging.DEBUG,
+    format="%(asctime)s - %(levelname)s - %(message)s [%(filename)s:%(lineno)d]",
     datefmt="%d-%b-%y %H:%M:%S",
     handlers=[
         RotatingFileHandler(
-            log.txt,
-            maxBytes=50000000,
-            backupCount=10
+            "Torrentleech-Gdrive.txt", maxBytes=50000000, backupCount=10
         ),
-        logging.StreamHandler()
-    ]
+        logging.StreamHandler(),
+    ],
 )
 logging.getLogger("pyrogram").setLevel(logging.WARNING)
 logging.getLogger("urllib3").setLevel(logging.WARNING)
 logging.getLogger("PIL").setLevel(logging.WARNING)
 logging.getLogger("asyncio").setLevel(logging.WARNING)
-
 
 LOGGER = logging.getLogger(__name__)
 
