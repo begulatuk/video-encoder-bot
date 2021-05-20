@@ -45,7 +45,7 @@ async def encode(filepath):
         video_opts = '-c:v libx265 -preset ultrafast -pix_fmt yuv420p10le -threads 0'
     # Get the audio channel codec
     audio_codec = get_codec(filepath, channel='a:0')
-    LOGGER.info(f"video_opts: {video_opts}")
+    
     
     if audio_codec == []:
         audio_opts = ''
@@ -53,7 +53,11 @@ async def encode(filepath):
         audio_opts = '-c:a copy'
     else:
         audio_opts = '-c:a aac -b:a 128k'
-    LOGGER.info(f"audio_opts: {audio_opts}")    
+        
+    audio_cmd = audio_opts.split()    
+    video_cmd = video_opts.split()
+    LOGGER.info(f"video_opts: {video_cmd}")
+    LOGGER.info(f"audio_opts: {audio_cmd}")    
     #call(['ffmpeg', '-i', filepath] + video_opts.split() + audio_opts.split() + [output_filepath])
     #process = subprocess.Popen(
     #    ['ffmpeg', '-i', filepath] + video_opts.split() + audio_opts.split() + [output_filepath],
@@ -67,17 +71,16 @@ async def encode(filepath):
       "-loglevel",
       "quiet",
       "-i",
-      filepath,
-      "-c:v", 
+      video_file,
+      "-c:v",
       "libx265",
       "-preset", 
       "veryslow",
-      "-crf",
-      "28",
+      "-x265-params",
       "-c:a",
       "copy",
-      output_filepath
-    ]    
+      out_put_file_name
+    ]
     LOGGER.debug(cmd)
     process = await asyncio.create_subprocess_exec(
         *cmd,
