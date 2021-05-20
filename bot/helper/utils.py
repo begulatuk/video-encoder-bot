@@ -8,7 +8,7 @@ import logging
 
 LOGGER = logging.getLogger(__name__)
 
-
+ROOT = os.getcwd()
 def on_task_complete():
     del data[0]
     if len(data) > 0:
@@ -18,7 +18,7 @@ async def add_task(message: Message):
     try:
       msg = await message.reply_text("```Downloading video...```", quote=True)
       custom_file_name = unquote_plus(os.path.basename(message.text))
-      filepath = os.path.join(download_dir, custom_file_name)  
+      filepath = os.path.join(ROOT, download_dir, custom_file_name)  
       downloader = SmartDL(message.text, filepath, progress_bar=False)
       downloader.start(blocking=False)                
       path = downloader.get_dest()          
