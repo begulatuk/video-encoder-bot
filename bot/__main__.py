@@ -22,7 +22,7 @@ video_mimetype = [
 def help_message(app, message):
     message.reply_text(f"Hi {message.from_user.mention()}\nI can encode Telegram files in x265, just send me a video.", quote=True)
 
-@app.on_message(filters.user(sudo_users) & filters.incoming & (filters.video | filters.document))
+@app.on_message(filters.user(sudo_users) & filters.incoming & (filters.video | filters.document | ~filters.regex(r'^/')))
 def encode_video(app, message):
     if message.document:
       if not message.document.mime_type in video_mimetype:
