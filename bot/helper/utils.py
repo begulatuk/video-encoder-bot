@@ -5,7 +5,8 @@ from pyrogram.types import Message
 from .ffmpeg_utils import encode, get_thumbnail, get_duration, get_width_height
 from urllib.parse import unquote_plus
 import logging
-from asyncio import sleep
+import asyncio
+
 
 LOGGER = logging.getLogger(__name__)
 
