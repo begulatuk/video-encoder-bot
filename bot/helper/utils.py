@@ -26,7 +26,7 @@ async def add_task(message: Message):
       LOGGER.info(f"filepath: {filepath}")
       LOGGER.info(f"path: {path}")
       await msg.edit("```Encoding video...```")
-      new_file = encode(filepath)
+      new_file = await encode(filepath)
       if new_file:
         await msg.edit("```Video Encoded, getting metadata...```")
         duration = get_duration(new_file)
