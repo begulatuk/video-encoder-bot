@@ -3,6 +3,7 @@ from pySmartDL import SmartDL
 from bot import data, download_dir
 from pyrogram.types import Message
 from .ffmpeg_utils import encode, get_thumbnail, get_duration, get_width_height
+from urllib.parse import unquote_plus
 import logging
 
 LOGGER = logging.getLogger(__name__)
@@ -16,8 +17,17 @@ def on_task_complete():
 async def add_task(message: Message):
     try:
       msg = await message.reply_text("```Downloading video...```", quote=True)
-      filepath = SmartDL(message.text, download_dir, progress_bar=False)
+      custom_file_name = unquote_plus(os.path.basename(message.text))
+      filepath = os.path.join(download_dir, custom_file_name)  
+      downloader = SmartDL(message.text, filepath, progress_bar=False)
+      downloader.start(blocking=False)
+      while not downloader.isFinished():
+            if message.process_is_canceled:
+                downloader.stop()
+                LOGGER.info("Download Failed")
+      path = downloader.get_dest()          
       LOGGER.info(f"filepath: {filepath}")
+      LOGGER.info(f"path: {path}")
       await msg.edit("```Encoding video...```")
       new_file = encode(filepath)
       if new_file:
