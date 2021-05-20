@@ -5,7 +5,6 @@ import time
 import ffmpeg
 import subprocess
 import asyncio
-from subprocess import call, check_output
 from hachoir.metadata import extractMetadata
 from hachoir.parser import createParser
 import logging
@@ -79,6 +78,8 @@ async def encode(filepath):
       "28",
       "-c:a",
       "copy",
+      "-threads",
+      "0",  
       output_filepath
     ]    
     LOGGER.debug(cmd)
