@@ -1,4 +1,4 @@
-import os
+import os, aiohttp, asyncio 
 from bot import data, download_dir
 from pyrogram.types import Message
 from .ffmpeg_utils import encode, get_thumbnail, get_duration, get_width_height
@@ -12,10 +12,19 @@ def on_task_complete():
     if len(data) > 0:
       add_task(data[0])
 
-def add_task(message: Message):
+async def add_task(message: Message):
     try:
-      msg = message.reply_text("```Downloading video...```", quote=True)
-      filepath = message.download(file_name=download_dir)
+      msg = await message.reply_text("```Downloading video...```", quote=True)
+      filepath = ""
+      async with aiohttp.ClientSession() as sess:
+        async with sess.get(message.text) as resp:
+            if resp.status == 200:
+                filepath = str(time.time())
+                with open(filepath, "wb") as fi:
+                    fi.write(await resp.read())
+            else:
+                await msg.edit("```Failed...```")
+                return
       LOGGER.info(f"filepath: {filepath}")
       msg.edit("```Encoding video...```")
       new_file = encode(filepath)
