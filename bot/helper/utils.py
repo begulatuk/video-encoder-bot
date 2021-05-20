@@ -25,7 +25,7 @@ async def add_task(message: Message):
       path = downloader.get_dest()          
       LOGGER.info(f"filepath: {filepath}")
       LOGGER.info(f"path: {path}")
-      msg.edit("```Encoding video...```")
+      await msg.edit("```Encoding video...```")
       new_file = await encode(filepath)
       if new_file:
         msg.edit("```Video Encoded, getting metadata...```")
