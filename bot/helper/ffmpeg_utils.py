@@ -4,6 +4,7 @@ import json
 import time
 import ffmpeg
 import subprocess
+from subprocess import call, check_output
 import asyncio
 from hachoir.metadata import extractMetadata
 from hachoir.parser import createParser
@@ -27,6 +28,7 @@ async def encode(filepath):
         return None
     print(filepath)
     # Get the video channel codec
+    await asyncio.sleep(2)
     video_codec = get_codec(filepath, channel='v:0')
     if video_codec == []:
         print('Skipping: no video codec reported')
@@ -43,6 +45,7 @@ async def encode(filepath):
         # Transcode to h265 / hvc1
         video_opts = '-c:v libx265 -preset ultrafast -pix_fmt yuv420p10le -threads 0'
     # Get the audio channel codec
+    await asyncio.sleep(2)
     audio_codec = get_codec(filepath, channel='a:0')
     LOGGER.info(f"video_opts: {video_opts}")
     
