@@ -5,6 +5,7 @@ from pyrogram.types import Message
 from .ffmpeg_utils import encode, get_thumbnail, get_duration, get_width_height
 from urllib.parse import unquote_plus
 import logging
+from asyncio import sleep
 
 LOGGER = logging.getLogger(__name__)
 
@@ -20,14 +21,17 @@ async def add_task(message: Message):
       custom_file_name = unquote_plus(os.path.basename(message.text))
       filepath = os.path.join(ROOT, download_dir, custom_file_name)  
       downloader = SmartDL(message.text, filepath, progress_bar=False)
+      await asyncio.sleep(2)
       downloader.start()
       print(downloader.isSuccessful())
       path = downloader.get_dest()          
       LOGGER.info(f"filepath: {filepath}")
       LOGGER.info(f"path: {path}")
+      await asyncio.sleep(2)
       await msg.edit("```Encoding video...```")
       new_file = await encode(filepath)
       if new_file:
+        await asyncio.sleep(2)
         await msg.edit("```Video Encoded, getting metadata...```")
         duration = get_duration(new_file)
         thumb = get_thumbnail(new_file, download_dir, duration / 4)
