@@ -53,7 +53,10 @@ async def encode(filepath):
         audio_opts = '-c:a copy'
     else:
         audio_opts = '-c:a aac -b:a 128k'
-    LOGGER.info(f"audio_opts: {audio_opts}")    
+    video_cmd = video_opts.split()
+    audio_cmd = audio_opts.split()
+    LOGGER.info(f"video_opts: {video_cmd}")    
+    LOGGER.info(f"audio_opts: {audio_cmd}")    
     #call(['ffmpeg', '-i', filepath] + video_opts.split() + audio_opts.split() + [output_filepath])
     #process = subprocess.Popen(
     #    ['ffmpeg', '-i', filepath] + video_opts.split() + audio_opts.split() + [output_filepath],
@@ -69,11 +72,11 @@ async def encode(filepath):
       "-i",
       filepath,
       "-c:v", 
-      "h264",
+      "libx265",
       "-preset", 
-      "ultrafast",
-      "-tune",
-      "film",
+      "veryslow",
+      "-crf",
+      "28",
       "-c:a",
       "copy",
       output_filepath
