@@ -1,4 +1,4 @@
-import os, aiohttp, asyncio 
+import os, aiohttp, asyncio, time 
 from bot import data, download_dir
 from pyrogram.types import Message
 from .ffmpeg_utils import encode, get_thumbnail, get_duration, get_width_height
