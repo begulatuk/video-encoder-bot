@@ -41,5 +41,6 @@ async def add_task(message: Message):
         msg.edit("```Something wents wrong while encoding your file. Make sure it is not already in HEVC format.```")
         os.remove(filepath)
     except Exception as e:
-      msg.edit(f"```{e}```")
+        await msg.edit(f"```{e}```")
+      
     on_task_complete()
