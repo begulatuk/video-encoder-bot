@@ -20,10 +20,7 @@ async def add_task(message: Message):
       custom_file_name = unquote_plus(os.path.basename(message.text))
       filepath = os.path.join(download_dir, custom_file_name)  
       downloader = SmartDL(message.text, filepath, progress_bar=False)
-      downloader.start(blocking=False)
-      while not downloader.isFinished():
-                downloader.stop()
-                LOGGER.info("Download Failed")
+      downloader.start(blocking=False)                
       path = downloader.get_dest()          
       LOGGER.info(f"filepath: {filepath}")
       LOGGER.info(f"path: {path}")
