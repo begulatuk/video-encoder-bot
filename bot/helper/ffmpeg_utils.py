@@ -71,15 +71,16 @@ async def encode(filepath):
       "-loglevel",
       "quiet",
       "-i",
-      video_file,
-      "-c:v",
-      "libx265",
+      filepath,
+      "-c:v", 
+      "h264",
       "-preset", 
-      "veryslow",
-      "-x265-params",
+      "ultrafast",
+      "-tune",
+      "film",
       "-c:a",
       "copy",
-      out_put_file_name
+      output_filepath
     ]
     LOGGER.debug(cmd)
     process = await asyncio.create_subprocess_exec(
