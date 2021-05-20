@@ -71,9 +71,9 @@ async def encode(filepath):
       "-c:v", 
       "libx265",
       "-preset", 
-      "slow",
+      "veryslow",
       "-crf",
-      "23",
+      "28",
       "-c:a",
       "copy",
       output_filepath
