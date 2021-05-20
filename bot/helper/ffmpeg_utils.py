@@ -4,6 +4,7 @@ import json
 import time
 import ffmpeg
 import subprocess
+import asyncio
 from subprocess import call, check_output
 from hachoir.metadata import extractMetadata
 from hachoir.parser import createParser
@@ -16,7 +17,7 @@ def get_codec(filepath, channel='v:0'):
                             'default=nokey=1:noprint_wrappers=1', filepath])
     return output.decode('utf-8').split()
 
-def encode(filepath):
+async def encode(filepath):
     basefilepath, extension = os.path.splitext(filepath)
     LOGGER.info(f"basefilepath: {basefilepath}")
     output_filepath = basefilepath + '.HEVC' + '.mp4'
@@ -54,20 +55,20 @@ def encode(filepath):
         audio_opts = '-c:a aac -b:a 128k'
     LOGGER.info(f"audio_opts: {audio_opts}")    
     #call(['ffmpeg', '-i', filepath] + video_opts.split() + audio_opts.split() + [output_filepath])
-    process = subprocess.Popen(
-        ['ffmpeg', '-i', filepath] + video_opts.split() + audio_opts.split() + [output_filepath],
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE,
-    )
-    #process = await asyncio.create_subprocess_exec(
+    #process = subprocess.Popen(
     #    ['ffmpeg', '-i', filepath] + video_opts.split() + audio_opts.split() + [output_filepath],
+    #    stdout=subprocess.PIPE,
+    #    stderr=subprocess.PIPE,
+    #)
+    process = await asyncio.create_subprocess_exec(
+        ['ffmpeg', '-i', filepath] + video_opts.split() + audio_opts.split() + [output_filepath],
         # stdout must a pipe to be accessible as process.stdout
-   #     stdout=asyncio.subprocess.PIPE,
-   #     stderr=asyncio.subprocess.PIPE,
-    #)    
+        stdout=asyncio.subprocess.PIPE,
+        stderr=asyncio.subprocess.PIPE,
+    )    
     #LOGGER.debug(cmd)
     #process = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)    
-    stdout, stderr = process.communicate()    
+    stdout, stderr = await process.communicate()    
     LOGGER.debug("[stdout] " + stdout.decode())
     LOGGER.debug("[stderr] " + stderr.decode())
     LOGGER.info(f"filepath: {filepath}")
