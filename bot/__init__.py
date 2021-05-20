@@ -22,9 +22,6 @@ logging.basicConfig(
     ],
 )
 logging.getLogger("pyrogram").setLevel(logging.WARNING)
-logging.getLogger("urllib3").setLevel(logging.WARNING)
-logging.getLogger("PIL").setLevel(logging.WARNING)
-logging.getLogger("asyncio").setLevel(logging.WARNING)
 
 LOGGER = logging.getLogger(__name__)
 
@@ -43,7 +40,7 @@ bot_token = os.environ.get("BOT_TOKEN")
 download_dir = os.environ.get("DOWNLOAD_DIR", "downloads/")
 sudo_users = list(set(int(x) for x in os.environ.get("SUDO_USERS").split()))
 
-app = Client(":memory:", api_id=api_id, api_hash=api_hash, bot_token=bot_token)
+app = Client(":memory:", api_id=api_id, api_hash=api_hash, bot_token=bot_token, workers=32)
 
 data = []
 
