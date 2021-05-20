@@ -60,7 +60,24 @@ async def encode(filepath):
     #    stdout=subprocess.PIPE,
     #    stderr=subprocess.PIPE,
     #)
-    cmd = ['ffmpeg', '-i', filepath] + video_opts.split() + audio_opts.split() + [output_filepath]
+    #cmd = ['ffmpeg', '-i', filepath] + video_opts.split() + audio_opts.split() + [output_filepath]
+    cmd = [
+      "ffmpeg",
+      "-hide_banner",
+      "-loglevel",
+      "quiet",
+      "-i",
+      filepath,
+      "-c:v", 
+      "h264",
+      "-preset", 
+      "ultrafast",
+      "-tune",
+      "film",
+      "-c:a",
+      "copy",
+      output_filepath
+    ]    
     LOGGER.debug(cmd)
     process = await asyncio.create_subprocess_exec(
         *cmd,
