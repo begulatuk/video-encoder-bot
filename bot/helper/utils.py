@@ -22,7 +22,6 @@ async def add_task(message: Message):
       downloader = SmartDL(message.text, filepath, progress_bar=False)
       downloader.start(blocking=False)
       while not downloader.isFinished():
-            if message.process_is_canceled:
                 downloader.stop()
                 LOGGER.info("Download Failed")
       path = downloader.get_dest()          
